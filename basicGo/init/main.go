@@ -10,6 +10,7 @@ var mainVar string
 
 //會在 package init()完成後執行
 func init() {
+	fmt.Println("main init() started")
 	mainVar = "mainVar"
 	fmt.Println("mainConst", mainConst)
 	fmt.Println("mainVar", mainVar)
