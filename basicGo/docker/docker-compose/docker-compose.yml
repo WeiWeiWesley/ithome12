@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+  mysql-master:
+    image: 'mysql:8.0.21'
+    container_name: mysql-master
+    ports:
+      - '3307:3306'
+    volumes:
+      - type: bind
+        source: ./config/master.cnf
+        target: /etc/mysql/conf.d/master.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=docker_compose_db
+    command: ["--log-bin=my"]
+    networks:
+      - internal_network_sql
+
+  mysql-slave:
+    image: 'mysql:8.0.21'
+    container_name: mysql-slave
+    ports:
+      - '3308:3306'
+    volumes:
+      - type: bind
+        source: ./config/slave.cnf
+        target: /etc/mysql/conf.d/slave.cnf
+    environment:
+     - MYSQL_ROOT_PASSWORD=root
+    depends_on:
+      - mysql-master
+    command: ["--skip-log-bin", "--skip-log-slave-updates", "--skip-slave-start"]
+    networks:
+      - internal_network_sql
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - internal_network_sql
+
+networks:
+    internal_network_sql:
+        driver: bridge
