@@ -1,6 +1,8 @@
 [mysqld]
+log-bin=mysql-bin
 server_id=2
 binlog_format=ROW
 gtid_mode=ON
 enforce-gtid-consistency=true
 read_only=ON
+relay-log=/var/lib/mysql/orders-relay-bin

@@ -1,4 +1,5 @@
 [mysqld]
+log-bin=mysql-bin
 server_id=1
 binlog_format=ROW
 gtid_mode=ON

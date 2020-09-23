@@ -12,8 +12,6 @@ services:
         target: /etc/mysql/conf.d/master.cnf
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=docker_compose_db
-    command: ["--log-bin=my"]
     networks:
       - internal_network_sql
 
@@ -27,10 +25,16 @@ services:
         source: ./config/slave.cnf
         target: /etc/mysql/conf.d/slave.cnf
     environment:
-     - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_REPLICATION_MODE=slave
+      - MYSQL_REPLICATION_USER=slave_user
+      - MYSQL_REPLICATION_PASSWORD=password
     depends_on:
       - mysql-master
-    command: ["--skip-log-bin", "--skip-log-slave-updates", "--skip-slave-start"]
+    command: [
+      "--skip-log-bin",
+      "--skip-log-slave-updates",
+    ]
     networks:
       - internal_network_sql
 
