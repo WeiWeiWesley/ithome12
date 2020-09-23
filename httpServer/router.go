@@ -13,6 +13,7 @@ import (
 const (
 	RouterRedirectPrefix = "/api/redirect"
 	AccessLog            = "access_log"
+	FilmPrefix           = "/film"
 )
 
 //Server Server
@@ -51,6 +52,14 @@ func Router() (server []Server) {
 	r.GET("/book/:page", BookPage)
 	r.POST("/body/json", JSONBody)
 	r.POST("/body/form_data", FormData)
+	r.POST("/film/form_data", FormData)
+
+	//Routing Group film
+	film := r.Group(FilmPrefix)
+	film.GET("/list", GetFilmList)
+	film.GET("/search", SearchFilm)
+	film.POST("/create", CreateFilm)
+	film.PUT("/update", UpdateFilmLength)
 
 	return
 }
