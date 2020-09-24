@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"time"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 //ConfigSet 連線設定
@@ -21,13 +20,12 @@ type ConfigSet struct {
 
 //OpnePool 啟用連線池
 func (c *ConfigSet) OpnePool() (db *gorm.DB, err error) {
-	db, err = gorm.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True", c.Username, c.Password, c.Host, c.DBname))
+	connInfo := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True", c.Username, c.Password, c.Host, c.DBname)
+	db, err = gorm.Open(mysql.Open(connInfo), &gorm.Config{})
 	if err != nil {
-		log.Println(err.Error())
+		fmt.Println("OpneMySQLPool：", connInfo, err.Error())
+		return nil, err
 	}
 
-	db.DB().SetMaxIdleConns(c.ConnMaxIdel)
-	db.DB().SetMaxOpenConns(c.ConnMaxOpen)
-	db.DB().SetConnMaxLifetime(time.Duration(c.ConnMaxLifeTime) * time.Second)
 	return
 }

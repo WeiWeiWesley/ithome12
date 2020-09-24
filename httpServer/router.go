@@ -61,6 +61,10 @@ func Router() (server []Server) {
 	film.POST("/create", CreateFilm)
 	film.PUT("/update", UpdateFilmLength)
 
+	//Transactions
+	r.POST("/example/transactions", Transactions)
+	r.POST("/example/notransactions", NoTransactions)
+
 	return
 }
 

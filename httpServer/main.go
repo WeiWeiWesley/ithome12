@@ -9,8 +9,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"gorm.io/gorm"
 )
 
 //const const
@@ -98,14 +97,6 @@ func main() {
 		for t := closeWait; t > 0; t-- {
 			log.Printf("Logout after %d second", t)
 			time.Sleep(time.Second)
-		}
-
-		if err := sqlMaster.Close(); err != nil {
-			log.Printf("MySQL conn pool close error: %s", err.Error())
-		}
-
-		if err := sqlSlave.Close(); err != nil {
-			log.Printf("MySQL conn pool close error: %s", err.Error())
 		}
 
 		return

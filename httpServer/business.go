@@ -174,3 +174,72 @@ func UpdateFilmLength(c *gin.Context) {
 
 	c.JSON(http.StatusOK, resp)
 }
+
+/*
+NoTransactions batch insert transactions example
+curl --location --request POST '127.0.0.1/example/notransactions'
+*/
+func NoTransactions(c *gin.Context) {
+	filmA := map[string]interface{}{
+		"name":     "瘋狂麥斯",
+		"category": "科幻",
+		"length":   180,
+	}
+	filmB := map[string]interface{}{
+		"name":     "捍衛任務",
+		"length":   180,
+	}
+
+	if err := sqlMaster.Table(FilmModel{}.TableName()).Debug().Create(&filmA).Error; err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	if err := sqlMaster.Table(FilmModel{}.TableName()).Debug().Create(&filmB).Error; err != nil {
+		//Field 'category' doesn't have a default value
+		c.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.String(http.StatusOK, "never reach")
+}
+
+/*
+Transactions batch insert transactions example
+curl --location --request POST '127.0.0.1/example/transactions'
+*/
+func Transactions(c *gin.Context) {
+	tx := sqlMaster.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+	filmA := map[string]interface{}{
+		"name":     "瘋狂麥斯",
+		"category": "科幻",
+		"length":   180,
+	}
+	filmB := map[string]interface{}{
+		"name":     "捍衛任務",
+		"length":   180,
+	}
+
+	if err := tx.Table(FilmModel{}.TableName()).Create(filmA).Error; err != nil {
+		tx.Rollback()
+		c.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	if err := tx.Table(FilmModel{}.TableName()).Create(filmB).Error; err != nil {
+		// Field 'category' doesn't have a default value
+		tx.Rollback()
+		c.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		return
+	}
+
+	c.String(http.StatusOK, "never reach")
+}
