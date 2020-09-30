@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restart-deployment
+  labels:
+    app: restart
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: restart
+  template:
+    metadata:
+      labels:
+        app: restart
+    spec:
+      containers:
+      - name: restart
+        image: weiweiwesley/restart:latest
+        ports:
+        - containerPort: 80
