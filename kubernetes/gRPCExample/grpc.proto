@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package grpc;
+
+
+service GrpcService {
+    rpc Ping(EchoRequest)returns(EchoResponse){}
+}
+
+message EchoRequest{
+    string client_address = 1;
+}
+
+message EchoResponse{
+    string server_address = 1;
+}
