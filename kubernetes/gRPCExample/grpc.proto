@@ -1,10 +1,9 @@
 syntax = "proto3";
 
-package grpc;
+package echo;
 
-
-service GrpcService {
-    rpc Ping(EchoRequest)returns(EchoResponse){}
+service EchoService {
+    rpc Echo(EchoRequest)returns(EchoResponse){}
 }
 
 message EchoRequest{

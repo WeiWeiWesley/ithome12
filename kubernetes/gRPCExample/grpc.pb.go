@@ -4,18 +4,19 @@
 // 	protoc        v3.12.0
 // source: grpc.proto
 
-package grpc
+package echo
 
 import (
 	context "context"
+	reflect "reflect"
+	sync "sync"
+
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
 )
 
 const (
@@ -126,17 +127,17 @@ func (x *EchoResponse) GetServerAddress() string {
 var File_grpc_proto protoreflect.FileDescriptor
 
 var file_grpc_proto_rawDesc = []byte{
-	0x0a, 0x0a, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x04, 0x67, 0x72,
-	0x70, 0x63, 0x22, 0x34, 0x0a, 0x0b, 0x45, 0x63, 0x68, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x0a, 0x0a, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x04, 0x65, 0x63,
+	0x68, 0x6f, 0x22, 0x34, 0x0a, 0x0b, 0x45, 0x63, 0x68, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
 	0x74, 0x12, 0x25, 0x0a, 0x0e, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x5f, 0x61, 0x64, 0x64, 0x72,
 	0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x63, 0x6c, 0x69, 0x65, 0x6e,
 	0x74, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x22, 0x35, 0x0a, 0x0c, 0x45, 0x63, 0x68, 0x6f,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x25, 0x0a, 0x0e, 0x73, 0x65, 0x72, 0x76,
 	0x65, 0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
 	0x52, 0x0d, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x32,
-	0x3e, 0x0a, 0x0b, 0x47, 0x72, 0x70, 0x63, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x2f,
-	0x0a, 0x04, 0x50, 0x69, 0x6e, 0x67, 0x12, 0x11, 0x2e, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x45, 0x63,
-	0x68, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x12, 0x2e, 0x67, 0x72, 0x70, 0x63,
+	0x3e, 0x0a, 0x0b, 0x45, 0x63, 0x68, 0x6f, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x2f,
+	0x0a, 0x04, 0x45, 0x63, 0x68, 0x6f, 0x12, 0x11, 0x2e, 0x65, 0x63, 0x68, 0x6f, 0x2e, 0x45, 0x63,
+	0x68, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x12, 0x2e, 0x65, 0x63, 0x68, 0x6f,
 	0x2e, 0x45, 0x63, 0x68, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x62,
 	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
@@ -155,12 +156,12 @@ func file_grpc_proto_rawDescGZIP() []byte {
 
 var file_grpc_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_grpc_proto_goTypes = []interface{}{
-	(*EchoRequest)(nil),  // 0: grpc.EchoRequest
-	(*EchoResponse)(nil), // 1: grpc.EchoResponse
+	(*EchoRequest)(nil),  // 0: echo.EchoRequest
+	(*EchoResponse)(nil), // 1: echo.EchoResponse
 }
 var file_grpc_proto_depIdxs = []int32{
-	0, // 0: grpc.GrpcService.Ping:input_type -> grpc.EchoRequest
-	1, // 1: grpc.GrpcService.Ping:output_type -> grpc.EchoResponse
+	0, // 0: echo.EchoService.Echo:input_type -> echo.EchoRequest
+	1, // 1: echo.EchoService.Echo:output_type -> echo.EchoResponse
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -227,72 +228,72 @@ var _ grpc.ClientConnInterface
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 
-// GrpcServiceClient is the client API for GrpcService service.
+// EchoServiceClient is the client API for EchoService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type GrpcServiceClient interface {
-	Ping(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (*EchoResponse, error)
+type EchoServiceClient interface {
+	Echo(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (*EchoResponse, error)
 }
 
-type grpcServiceClient struct {
+type echoServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewGrpcServiceClient(cc grpc.ClientConnInterface) GrpcServiceClient {
-	return &grpcServiceClient{cc}
+func NewEchoServiceClient(cc grpc.ClientConnInterface) EchoServiceClient {
+	return &echoServiceClient{cc}
 }
 
-func (c *grpcServiceClient) Ping(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (*EchoResponse, error) {
+func (c *echoServiceClient) Echo(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (*EchoResponse, error) {
 	out := new(EchoResponse)
-	err := c.cc.Invoke(ctx, "/grpc.GrpcService/Ping", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/echo.EchoService/Echo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// GrpcServiceServer is the server API for GrpcService service.
-type GrpcServiceServer interface {
-	Ping(context.Context, *EchoRequest) (*EchoResponse, error)
+// EchoServiceServer is the server API for EchoService service.
+type EchoServiceServer interface {
+	Echo(context.Context, *EchoRequest) (*EchoResponse, error)
 }
 
-// UnimplementedGrpcServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedGrpcServiceServer struct {
+// UnimplementedEchoServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedEchoServiceServer struct {
 }
 
-func (*UnimplementedGrpcServiceServer) Ping(context.Context, *EchoRequest) (*EchoResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+func (*UnimplementedEchoServiceServer) Echo(context.Context, *EchoRequest) (*EchoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Echo not implemented")
 }
 
-func RegisterGrpcServiceServer(s *grpc.Server, srv GrpcServiceServer) {
-	s.RegisterService(&_GrpcService_serviceDesc, srv)
+func RegisterEchoServiceServer(s *grpc.Server, srv EchoServiceServer) {
+	s.RegisterService(&_EchoService_serviceDesc, srv)
 }
 
-func _GrpcService_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _EchoService_Echo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(EchoRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GrpcServiceServer).Ping(ctx, in)
+		return srv.(EchoServiceServer).Echo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/grpc.GrpcService/Ping",
+		FullMethod: "/echo.EchoService/Echo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GrpcServiceServer).Ping(ctx, req.(*EchoRequest))
+		return srv.(EchoServiceServer).Echo(ctx, req.(*EchoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _GrpcService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "grpc.GrpcService",
-	HandlerType: (*GrpcServiceServer)(nil),
+var _EchoService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "echo.EchoService",
+	HandlerType: (*EchoServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Ping",
-			Handler:    _GrpcService_Ping_Handler,
+			MethodName: "Echo",
+			Handler:    _EchoService_Echo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
