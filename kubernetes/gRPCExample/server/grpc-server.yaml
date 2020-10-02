@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-server
+  labels:
+    app: grpc-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: grpc-server
+  template:
+    metadata:
+      labels:
+        app: grpc-server
+    spec:
+      containers:
+      - name: grpc-server
+        image: weiweiwesley/grpc-server:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: grpc-server
+spec:
+  type: ClusterIP
+  selector:
+    app: grpc-server
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+
+
