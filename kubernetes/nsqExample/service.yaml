@@ -1,0 +1,51 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: nsqlookupd
+spec:
+  type: ClusterIP
+  selector:
+    app: nsqlookupd
+  ports:
+  - protocol: TCP
+    port: 4160
+    targetPort: 4160
+    name: tcp
+  - protocol: TCP
+    port: 4161
+    targetPort: 4161
+    name: http
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nsqd
+spec:
+  type: ClusterIP
+  selector:
+    app: nsqd
+  ports:
+  - protocol: TCP
+    port: 4150
+    targetPort: 4150
+    name: tcp
+  - protocol: TCP
+    port: 4151
+    targetPort: 4151
+    name: http
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nsqadmin
+spec:
+  type: ClusterIP
+  selector:
+    app: nsqadmin
+  ports:
+  - protocol: TCP
+    port: 4171
+    targetPort: 4171
+    name: http

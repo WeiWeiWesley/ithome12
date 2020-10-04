@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nsqlookupd
+  labels:
+    app: nsqlookupd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nsqlookupd
+  template:
+    metadata:
+      labels:
+        app: nsqlookupd
+    spec:
+      containers:
+      - name: nsqlookupd
+        image: nsqio/nsq
+        ports:
+          - name: tcp
+            containerPort: 4160
+            protocol: TCP
+          - name: http
+            containerPort: 4161
+            protocol: TCP
+        command: ["/nsqlookupd"]
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nsqd
+  labels:
+    app: nsqd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nsqd
+  template:
+    metadata:
+      labels:
+        app: nsqd
+    spec:
+      containers:
+      - name: nsqd
+        image: nsqio/nsq
+        ports:
+          - name: tcp
+            containerPort: 4150
+            protocol: TCP
+          - name: http
+            containerPort: 4151
+            protocol: TCP
+        command: ["/nsqd"]
+        args: ["--lookupd-tcp-address=nsqlookupd:4160"]
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nsqadmin
+  labels:
+    app: nsqadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nsqadmin
+  template:
+    metadata:
+      labels:
+        app: nsqadmin
+    spec:
+      containers:
+      - name: nsqadmin
+        image: nsqio/nsq
+        ports:
+          - name: http
+            containerPort: 4171
+            protocol: TCP
+        command: ["/nsqadmin"]
+        args: ["--lookupd-http-address=nsqlookupd:4161"]
