@@ -1,0 +1,5 @@
+# github.com/golang/snappy v0.0.1
+github.com/golang/snappy
+# github.com/nsqio/go-nsq v1.0.8
+## explicit
+github.com/nsqio/go-nsq
