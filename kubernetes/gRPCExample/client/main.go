@@ -12,9 +12,12 @@ import (
 
 func main() {
 	currentPod := os.Getenv("POD_IP")
-	log.Println("Current pod ip:", currentPod)
+	sidecarIP := os.Getenv("SIDECAR_IP")
 
-	conn, err := grpc.Dial("grpc-server:8080", grpc.WithInsecure(), grpc.WithBlock())
+	log.Println("Current pod ip:", currentPod)
+	log.Println("Sidecar ip:", sidecarIP)
+
+	conn, err := grpc.Dial(sidecarIP, grpc.WithInsecure(), grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy":"round_robin"}`))
 	if err != nil {
 		log.Fatalf("grpc conn fail: %v", err)
 	}
