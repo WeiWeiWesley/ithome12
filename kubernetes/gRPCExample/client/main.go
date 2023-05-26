@@ -17,7 +17,7 @@ func main() {
 	log.Println("Current pod ip:", currentPod)
 	log.Println("Sidecar ip:", sidecarIP)
 
-	conn, err := grpc.Dial(sidecarIP, grpc.WithInsecure(), grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy":"round_robin"}`))
+	conn, err := grpc.Dial(sidecarIP, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		log.Fatalf("grpc conn fail: %v", err)
 	}
